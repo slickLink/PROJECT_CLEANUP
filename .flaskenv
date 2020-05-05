@@ -1,0 +1,2 @@
+FLASK_APP=Cleanup.py
+FLASK_DEBUG=1
