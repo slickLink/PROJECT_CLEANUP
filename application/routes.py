@@ -8,4 +8,4 @@ def index():
 
 @app.route('/start')
 def start_login():
-    return 'hello'
+    return app.config['CLIENT_ID']
