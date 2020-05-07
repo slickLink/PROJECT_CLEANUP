@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, url_for, make_response, session
 from application import app
 from application.oauth import SpotifyOauth2
 
@@ -12,14 +12,26 @@ def index():
 @app.route('/start')
 def start_login():
     # Get the authorization url
-    auth_url = spotify_oauth.request_auth_url()
-
-    if auth_url is None:
+    auth_url_state = spotify_oauth.request_auth_url()
+    if auth_url_state is None:
         return 'Sorry Will be fixed soon!'
     else:
-        return redirect(auth_url)
-    return 'hello'
+        #save state in session
+        session['state'] = auth_url_state[1]
+    return redirect(auth_url_state[0])
 
 @app.route('/callback')
 def callback():
-    return request.args.get('code')
+    #check if user did not grant access 
+    error_check = request.args.get('error') or None
+    if error_check is None:
+        # send user back to welcome page
+        return redirect(url_for('start_login'))
+    
+    # check for cross-site request forgery
+    check_state = session.get('state')
+    returned_state = request.args.get('state')
+    if check_state == returned_state:
+        return 'True'
+    else:
+        return 'False'

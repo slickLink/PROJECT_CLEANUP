@@ -15,7 +15,7 @@ class SpotifyOauth2:
 
     def request_auth_url(self):
         """ request authorization url,
-         returns the url or None """
+         returns the url and the state it is in or None """
 
         SPOTIFY_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize'
 
@@ -35,7 +35,7 @@ class SpotifyOauth2:
         if response.status_code != 200:
             return None
         else:
-            return response.url
+            return [response.url, state]
         
 
             
