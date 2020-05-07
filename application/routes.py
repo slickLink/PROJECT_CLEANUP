@@ -35,6 +35,10 @@ def callback():
         flash("incorrect state recieved from API request")
         redirect(url_for('index'))
     
-    #
+    #get access_token and refresh token
+    auth_code = request.args.get('code')
+    token_data = spotify_oauth.request_access_token(auth_code)
+    
+    return token_data
 
        
