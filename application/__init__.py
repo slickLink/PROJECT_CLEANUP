@@ -8,4 +8,4 @@ app = Flask(__name__)
 app.config.from_object(Config)
 Session(app)
 
-from application import routes, oauth, utils
+from application import routes, utils, oauth, user

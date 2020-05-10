@@ -13,14 +13,12 @@ class SpotifyOauth2:
         self.client_secret = app.config['CLIENT_SECRET']
         self.redirect_uri = app.config['REDIRECT_URI']
     
-    def get_authorization_header_basic(self):
-        ''' Base 64 encoded string that contains the client ID and client secret key. 
-        The field must have the format:
-        Authorization: Basic *<base64 encoded client_id:client_secret>* '''
+    def get_authorization_header(self, token):
+        ''' return authorization header format
+            Authorization: Bearer {token} '''
 
-        encoded_secret = utils.encode_pair(self.client_id, self.client_secret)
         h = {
-            'Authorization' : 'Basic {encoded_secret}'
+            'Authorization' : 'Bearer {}'.format(token)
         }
         return h
 
@@ -64,15 +62,6 @@ class SpotifyOauth2:
 
         # send post request to Spotify & process response with json
         post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload)
-        #response_data = json.loads(post_response.text)
-        '''token_data = {
-            'access_token': response_data['access_token'],
-            'token_type': response_data['token_type'],
-            'scope': response_data['scope'],
-            'expires_in': response_data['expires_in'],
-            'refresh_token': response_data['refresh_token']
-        }'''
-        print(post_response)
         return post_response.json()
 
 

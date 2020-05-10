@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
+    <script src="{{ url_for('static', filename='home.js') }}" async></script>
+    <title>Home</title>
+</head>
+<body>
+    <!-- Playlist selection -->
+    <div class="playlist_wrapper">
+        <!--Header that changes based on control-->
+        <h1 id="Header"></h1>
+        <!--Grid items, use css-grid please-->
+        <div class="grid_parent">
+            {% for playlist in playlists %}
+                {% include 'playlist_item.html' %}
+            {% endfor %}
+        </div>
+
+    </div>
+    <!-- Control buttons -->
+    <div class="control_wrapper">
+        <button id="1_btn" class="control_button btn_1"></button>
+        <button id="2_btn" class="control_button btn_2"></button>
+        <button id="next_btn" class="control_button btn_next">
+            <img class="icon" src="{{ url_for('static', filename='forward_icon.png') }}" alt="forward arrow icon">
+        </button>
+    </div>
+</body>
+</html>
