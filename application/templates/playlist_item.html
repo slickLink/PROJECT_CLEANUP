@@ -1,4 +1,5 @@
 <div class="grid_item">
+    <p class="playlist_id">{{ playlist.id }}</p>
     <div class="image_wrapper">
         <img class="image" src="{{ playlist.image or url_for('static', filename='default_playlist.png')}}" alt="playlist image">
     </div>

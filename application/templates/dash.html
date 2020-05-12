@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dash.css') }}">
+    <script src="{{ url_for('static', filename='dash.js') }}" async></script>
+</head>
+
+<body>
+    <!--header-->
+    <div class="header_wrapper">
+        <!-- back button-->
+        <button class="back_btn btn">
+            <img class="back_btn_img" src="{{ url_for('static', filename='back.png') }}" alt="back arrow">
+        </button>
+        <!--Playlist switch panel-->
+        <div class="playlist_panel">
+            <button class="main_playlist_btn btn">
+                <img class="playlist_btn_img" src="playlist_image.png" alt="first playlist">
+            </button>
+            <img class="playlist_panel_icon" src="{{ url_for('static', filename='switch.png') }}" alt="switch playlist icon">
+            <button class="other_playlist_btn btn">
+                <img class="playlist_btn_img" src="playlist_image.png" alt="second playlist">
+            </button>
+        </div>
+    </div>
+    <!--content-->
+    <div class="content_wrapper">
+        <!--content items-->
+        <div class="content_parent">
+            <!--labels for content-->
+            <div class="label_wrapper">
+                <h2 class="label_item">TITLE</h2>
+                <h2 class="label_item label_artist">ARTIST</h2>
+                <img class="label_item label_icon" src="{{ url_for('static', filename='clock.png') }}" alt="clock icon">
+            </div>
+            <!--Repeat item here-->
+            {% for track in tracks %}
+                {% include 'track_item.html' %}
+            {% endfor %}
+            <!--end repeat here-->
+        </div>
+        <!--Controls-->
+        <div class="controls_wrapper">
+            <button class="control_button btn_move btn">
+                <img class="icon move_icon" src="{{ url_for('static', filename='move.png') }}" alt="forward arrow icon">
+            </button>
+            <button class="control_button btn_delete btn">
+                <img class="icon" src="{{ url_for('static', filename='delete.png') }}" alt="forward arrow icon">
+            </button>
+            <button class="control_button btn_cancel btn">
+                <img class="icon" src="{{ url_for('static', filename='cancel.png') }}" alt="forward arrow icon">
+            </button>
+            <p class="counter">0</p>
+        </div>
+    </div>
+</body>
+
+</html>

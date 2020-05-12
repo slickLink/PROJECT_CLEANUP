@@ -1,4 +1,5 @@
 import requests
+from application import utils
 
 class User:
     '''
@@ -14,8 +15,99 @@ class User:
         '''
         self.playlists = []
         self.user_id = None
+
+    def process_tracks(self, data):
+        '''
+            takes unprocessed Spotify track objects 
+            returns a <list> of processed tracks or None
+        '''
+        tracks = []
+
+        for item in data:
+            track_template = {
+                'id': None,
+                'image': None,
+                'name': None,
+                'artists': None,
+                'duration': None
+            }
+            # retrieve id
+            track_template['id'] = item['track']['id']
+            # retrieve album image
+            track_template['image'] = item['track']['album']['images'][0]['url']
+            # retrieve track name
+            track_template['name'] = item['track']['name']
+            # retrieve artist names
+            artists_list = item['track']['artists']
+            artists = ''
+            for artist in artists_list:
+                artists += artist['name'] + ', '
+            
+            track_template['artists'] = artists[:-2]
+            # retrieve track duration
+            track_template['duration'] = utils.convert_time(item['track']['duration_ms'])
+            tracks.append(track_template)
+        
+        return tracks
+
+
+    
+    def request_playlist_tracks(self, auth_header, playlist_id):
+        '''
+            Requests tracks from a given playlist_id
+            returns: list of tracks with template:
+            track format <dict>
+            id: <id>,
+            image: <album_image_url>,
+            name: <name>,
+            artist: <artist>
+            duration: <time>
+        '''
+        SPOTIFY_USER_PLAYLIST = 'https://api.spotify.com/v1/playlists/{}/tracks'.format(playlist_id)
+        tracks = []
+
+        if (auth_header is None):
+            return None
+        
+        # get data
+        get_response = requests.get(SPOTIFY_USER_PLAYLIST, headers=auth_header)
+
+        #error checking
+        if (get_response.status_code != 200):
+            print(get_response.json())
+            return None
+        
+        #process response
+        response_data = get_response.json()
+        tracks_data = response_data['items']
+        tracks.extend(self.process_tracks(tracks_data))
+
+        # check for paging object - more playlist data
+        while(response_data['next'] is not None):
+            #get data
+            next_set = requests.get(response_data['next'], headers=auth_header)
+            #error checking
+            if (next_set.status_code != 200):
+                print(next_set.json())
+                break
+
+            #process more data
+            response_data = next_set.json()
+            tracks_data = response_data['items']
+            tracks.extend(self.process_tracks(tracks_data))
+
+        return tracks
+
+
+
     
     def process_playlists(self, playlists_data):
+        ''' 
+            This function strips useful playlist info given by spotify
+            takes an array of playlist objects from spotify
+            formats each playlist owned by the user to python <dict>
+            then adds formated playlist item to self.playlists
+        '''
         for item in playlists_data:
             playlist_template = {
                 'id': None,

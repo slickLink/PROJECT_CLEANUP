@@ -36,12 +36,12 @@ function selectItem() {
         if(main_playlist === null){
             // if main playlist is empty
             main_playlist = this;
-            this.children[0].style.backgroundColor = spotify_green;
+            this.children[1].style.backgroundColor = spotify_green;
         }
         else if (main_playlist !== this) {
             // if switching main playlist
-            this.children[0].style.backgroundColor = spotify_green;
-            main_playlist.children[0].style.backgroundColor = clear_color;
+            this.children[1].style.backgroundColor = spotify_green;
+            main_playlist.children[1].style.backgroundColor = clear_color;
             main_playlist = this;
         }
         // if newly selected item was already the bin playlist
@@ -55,12 +55,12 @@ function selectItem() {
         if(bin_playlist === null){
             // if main playlist is empty
             bin_playlist = this;
-            this.children[0].style.backgroundColor = spotify_black;
+            this.children[1].style.backgroundColor = spotify_black;
         }
         else if (bin_playlist !== this) {
             // if switching main playlist
-            this.children[0].style.backgroundColor = spotify_black;
-            bin_playlist.children[0].style.backgroundColor = clear_color;
+            this.children[1].style.backgroundColor = spotify_black;
+            bin_playlist.children[1].style.backgroundColor = clear_color;
             bin_playlist = this;
         }
         // if newly selected item was already the main playlist
@@ -102,4 +102,20 @@ function nextPage() {
     }
     
     // code to send info back to server
+    //prepare data payload
+    let data = {
+        main: main_playlist.children[0].textContent,
+        other: bin_playlist.children[0].textContent
+    }
+    // send
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://127.0.0.1:5000/dash", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(data));
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          window.location.replace(this.responseText)
+        }
+      };
 }

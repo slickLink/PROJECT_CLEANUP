@@ -1,0 +1,223 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image: url(Home_page.png);
+    background-repeat: repeat-y;
+    background-size: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+::-webkit-scrollbar {
+    width: 5px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #888; 
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(29, 185, 84, 0.3); 
+}
+
+/* header */
+.header_wrapper {
+    width: 100;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+/* back button */
+.btn {
+    background-color: rgba(255, 255, 255,0.3 );
+    border: none;
+    border-color: white;
+    border-radius: 5em;
+    width: 5em;
+    height: 5em;
+    justify-items: center;
+    text-align: center;
+}
+
+/*.back_btn {
+    /*position: fixed; 
+} */
+.back_btn_img {
+    width: 25%;
+}
+
+/* playlist switch panel */
+.playlist_panel {
+    margin: 5px;
+    width: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /*position: fixed;
+    right: 0;
+    top: 6px;*/
+}
+
+.playlist_btn_img {
+    width: 70%;
+}
+
+.playlist_panel_icon {
+    width: 20%;
+    height: 70%;
+}
+
+/* content */
+.content_wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 90%;
+}
+
+/* content items */
+.content_parent {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 2% 0 0 3%;
+    overflow-y: scroll;
+}
+
+/* labels for content */
+.label_wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 88%;
+    justify-content: space-between;
+    margin-left: 7%;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 55px;
+    position: fixed;
+    top: 80px; 
+}
+
+.label_item {
+    color: white;
+}
+
+.label_artist {
+    margin-left: 7%;
+}
+.label_icon {
+    margin-right: 9%;
+    width: 30px;
+    height: 30px;
+}
+.content_item {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    background-color: rgba(255, 255, 255,0.3 );
+    border-radius: 2.5em;
+    justify-content: space-between;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 7px;
+}
+
+.song {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 4%;
+    width: 30%
+}
+
+.song_title {
+    margin-left: 2%;
+    width: 100%;
+    font-size: 1.25rem;
+}
+
+.song_artist {
+    justify-self: flex-start;
+    width: 20%;
+    align-self: center;
+    font-size: 1.25rem;
+}
+
+.song_length {
+    width: 5%;
+    align-self: center;
+    font-size: 1.25rem;
+}
+.song_id {
+    display: none;
+}
+.item_img {
+    width: 45px;
+    height: 45px;
+}
+w
+/* controls */
+.controls_wrapper {
+    width: 20%;
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-left: 5%;
+}
+
+.control_button {
+    width: 4.5em;
+    height: 4.5em;
+    border-radius: 4.5em;
+    background-color: rgba(20, 20, 20, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 50%;
+}
+
+.move_icon {
+    width: 65%;
+}
+
+.btn_move {
+    position: fixed;
+    top: 180px;
+    right: 25px; 
+}
+
+.btn_delete {
+    position: fixed;
+    top: 275px;
+    right: 25px; 
+}
+
+.btn_cancel {
+    position: fixed;
+    top: 600px;
+    right: 25px; 
+}
+
+.controls_wrapper p {
+   position: fixed;
+    top: 645px;
+    right: 48px; 
+    font-size: 1.5rem;
+    color: white;
+}

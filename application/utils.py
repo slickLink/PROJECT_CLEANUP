@@ -13,3 +13,10 @@ def encode_pair(first, second):
     encoded_data = base64.b64encode(bytes(f"{first}:{second}", "ISO-8859-1")).decode("ascii")
     return encoded_data
 
+def convert_time(ms):
+    if type(ms) is not int:
+        return None
+
+    seconds = int((ms / 1000) % 60)
+    minutes = int((ms / (1000 * 60)) % 60)
+    return '{}:{}'.format(minutes, seconds)
