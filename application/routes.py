@@ -13,28 +13,30 @@ def index():
 
 @app.route('/home')
 def home():
-    #send selected playlist names back to server
+    # send selected playlist names back to server
     return render_template("home.html", playlists=spotify_user.playlists)
 
-@app.route('/dash', methods=['GET','POST'])
+@app.route('/dash', methods=['GET','POST','DELETE'])
 def dash():
     if request.method == 'POST':
-        #retrieve playlist ids
+        # retrieve playlist ids
         request_data = request.get_json()
         main_playlist_id = request_data.get('main')
         other_playlist_id = request_data.get('other')
 
-        #retrieve access_token
+        session['main'] = main_playlist_id
+        session['other'] = other_playlist_id
+
+        # retrieve access_token
         token_data = session.get('access_token')
         h = spotify_oauth.get_authorization_header(token_data['access_token'])
-        #get data
+        # get data
         data = spotify_user.request_playlist_tracks(h, main_playlist_id)
 
         if data is None:
             return 'Sorry playlist has no tracks'
         session['tracks'] = data
         return url_for('dash')
-
     return render_template("dash.html", tracks=session.get('tracks'))
 
 @app.route('/start')

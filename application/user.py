@@ -15,6 +15,35 @@ class User:
         '''
         self.playlists = []
         self.user_id = None
+    
+    def delete_tracks(self, auth_header ,playlist_id, track_ids):
+        '''
+            given a list of valid track ids,
+            will request spotify to delete the tracks from a playlist
+        '''
+        SPOTIFY_USER_PLAYLIST = 'https://api.spotify.com/v1/playlists/{}/tracks'.format(playlist_id)
+        if auth_header is None:
+            return False
+        else:
+            auth_header['Content-Type'] = 'application/json'
+        # data format
+        data_payload = {
+            'tracks': None
+        }
+        data = []
+        for track in track_ids:
+            template = {
+                'uri': 'spotify:track:{}'.format(track)
+            }
+            data.append(template)
+        data_payload['tracks'] = data
+
+
+        
+        
+
+        
+
 
     def process_tracks(self, data):
         '''
