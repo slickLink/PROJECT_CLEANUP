@@ -1,4 +1,5 @@
 from application import app, utils
+from flask import session
 import requests, json
 
 
@@ -35,7 +36,7 @@ class SpotifyOauth2:
             'response_type': 'code',
             'redirect_uri': self.redirect_uri,
             'state': state,
-            'scope': 'playlist-modify-private'
+            'scope': 'playlist-modify-private playlist-modify-public'
         }
 
         # request authorization code
@@ -64,8 +65,45 @@ class SpotifyOauth2:
         post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload)
         return post_response.json()
 
+    def refresh_access_token(self, refresh_token):
+        '''
+            this function is requests a new access_token using a refresh token
+            returns token new access_token on success and None otherwise
+        '''
+        SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
+
+        if refresh_token is None:
+            return None
+        #prepare header
+        encoded_secret = utils.encode_pair(self.client_id, self.client_secret)
+        header = {
+            'Authorization': 'Basic {}'.format(encoded_secret),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        # request body parameter
+        token_data = session.get('access_token')
+
+        #request
+        post_response = requests.post(SPOTIFY_TOKEN_URL, 
+        {
+            'grant_type': 'refresh_token',
+            'refresh_token': token_data['refresh_token']
+        }, 
+        headers=header)
+
+        #error checking
+        if post_response.status_code != 200:
+            print("refresh_token error")
+            print(post_response.json())
+            return None
+        
+        token_data = post_response.json()
+        return token_data
 
 
+
+        
+        
 
 
             

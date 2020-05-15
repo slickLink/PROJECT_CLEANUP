@@ -33,7 +33,7 @@ for (i = 0; i < tracks.length; i++) {
 
 // functions
 function back() {
-
+    window.location.replace('http://127.0.0.1:5000/home')
 }
 
 function selectMain() {
@@ -41,15 +41,47 @@ function selectMain() {
 }
 
 function selectOther() {
-
+    alert("Sorry, the feature to switch to this playlist is coming soon");
 }
 
 function moveTracks() {
-
+    alert("Sorry, the feature to move the selected tracks is coming soon");
 }
 
 function deleteTracks() {
+    if (selected_tracks.length > 0 && selected_tracks.length <= 100) {
+        // send selected tracks to server for deletion
+        let tracks = []
+        for (let i = 0; i < selected_tracks.length; i++) {
+            let id = selected_tracks[i].children[0].textContent;
+            tracks.push(id);
+        }
+        let data = {
+            mode: "delete-tracks"
+        };
+        data.tracks = tracks;
+        console.log(data.tracks)
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "http://127.0.0.1:5000/dash", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(data));
 
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              if(this.responseText === 'True') {
+                  window.location.reload(true);
+              }
+              else {
+                  alert("There was an error requesting spotify to delete the selected tracks");
+              }
+            }
+        };
+    } else if (selected_tracks.length > 100) {
+        alert("A maximum of 100 songs can be deleted at once.");
+    }
+    else {
+        alert("Select tracks to delete from playlist");
+    }
 }
 
 function cancelSelection() {

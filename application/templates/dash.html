@@ -19,11 +19,11 @@
         <!--Playlist switch panel-->
         <div class="playlist_panel">
             <button class="main_playlist_btn btn">
-                <img class="playlist_btn_img" src="playlist_image.png" alt="first playlist">
+                <img class="playlist_btn_img" src="{{ main.image }}" alt="first playlist">
             </button>
             <img class="playlist_panel_icon" src="{{ url_for('static', filename='switch.png') }}" alt="switch playlist icon">
             <button class="other_playlist_btn btn">
-                <img class="playlist_btn_img" src="playlist_image.png" alt="second playlist">
+                <img class="playlist_btn_img" src="{{ other.image }}" alt="second playlist">
             </button>
         </div>
     </div>

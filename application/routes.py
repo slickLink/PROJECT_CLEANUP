@@ -19,25 +19,52 @@ def home():
 @app.route('/dash', methods=['GET','POST','DELETE'])
 def dash():
     if request.method == 'POST':
-        # retrieve playlist ids
+        # get retrive mode
         request_data = request.get_json()
-        main_playlist_id = request_data.get('main')
-        other_playlist_id = request_data.get('other')
+        mode = request_data.get('mode')
+        
+        if (mode == 'get-tracks'):
+            # retrieve playlist ids
+            main_playlist_id = request_data.get('main')
+            other_playlist_id = request_data.get('other')
 
-        session['main'] = main_playlist_id
-        session['other'] = other_playlist_id
+            session['main'] = main_playlist_id
+            session['other'] = other_playlist_id
 
-        # retrieve access_token
-        token_data = session.get('access_token')
-        h = spotify_oauth.get_authorization_header(token_data['access_token'])
-        # get data
-        data = spotify_user.request_playlist_tracks(h, main_playlist_id)
+            # retrieve access_token
+            token_data = session.get('access_token')
+            h = spotify_oauth.get_authorization_header(token_data['access_token'])
+            # get data
+            data = spotify_user.request_playlist_tracks(h, main_playlist_id)
 
-        if data is None:
-            return 'Sorry playlist has no tracks'
-        session['tracks'] = data
-        return url_for('dash')
-    return render_template("dash.html", tracks=session.get('tracks'))
+            if data is None:
+                return 'Sorry playlist has no tracks'
+            session['tracks'] = data
+            return url_for('dash')
+        elif (mode == 'delete-tracks'):
+            # retrieve tracks
+            tracks = request_data.get('tracks')
+
+            # retrieve access_token
+            token_data = session.get('access_token')
+            h = spotify_oauth.get_authorization_header(token_data['access_token'])
+            # retrieve playlist id
+            playlist_id = session.get('main')
+            # delete tracks
+            data = spotify_user.delete_tracks(h, playlist_id, tracks)
+            tracks_data = session.get('tracks')
+            if data is True:
+                for item in tracks:
+                    # for every deleted track id
+                    for i in range(len(tracks_data)):
+                        # search saved tracks and delete the version here
+                        if tracks_data[i]['id'] == item:
+                            del tracks_data[i]
+                            break
+                session['tracks'] = tracks_data
+            print(data)
+            return str(data)
+    return render_template("dash.html", tracks=session.get('tracks'), main=session.get('main'), other=session.get('other'))
 
 @app.route('/start')
 def start_login():

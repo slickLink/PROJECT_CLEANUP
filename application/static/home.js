@@ -104,9 +104,10 @@ function nextPage() {
     // code to send info back to server
     //prepare data payload
     let data = {
+        mode: 'get-tracks',
         main: main_playlist.children[0].textContent,
         other: bin_playlist.children[0].textContent
-    }
+    };
     // send
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "http://127.0.0.1:5000/dash", true);
@@ -115,7 +116,7 @@ function nextPage() {
 
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          window.location.replace(this.responseText)
+          window.location.replace(this.responseText);
         }
-      };
+    };
 }

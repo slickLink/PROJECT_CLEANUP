@@ -1,6 +1,6 @@
-import requests
+import requests, json
 from application import utils
-
+from flask import url_for
 class User:
     '''
         This Class is used to store data related to the user
@@ -33,17 +33,20 @@ class User:
         data = []
         for track in track_ids:
             template = {
-                'uri': 'spotify:track:{}'.format(track)
+                'uri': None
             }
+            template['uri'] = 'spotify:track:{}'.format(track)  
             data.append(template)
         data_payload['tracks'] = data
+        #request to delete the tracks
 
+        delete_response = requests.delete(SPOTIFY_USER_PLAYLIST, headers=auth_header, data=json.dumps(data_payload))
 
+        if delete_response.status_code != 200:
+            print(delete_response.json())
+            return False
         
-        
-
-        
-
+        return True
 
     def process_tracks(self, data):
         '''
@@ -63,7 +66,10 @@ class User:
             # retrieve id
             track_template['id'] = item['track']['id']
             # retrieve album image
-            track_template['image'] = item['track']['album']['images'][0]['url']
+            try:
+                track_template['image'] = item['track']['album']['images'][0]['url']
+            except IndexError:
+                track_template['image'] = url_for('static', filename='default_playlist.png')
             # retrieve track name
             track_template['name'] = item['track']['name']
             # retrieve artist names
