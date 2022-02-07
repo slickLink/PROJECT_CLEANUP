@@ -27,7 +27,7 @@ def dash():
             # retrieve playlist ids
             main_playlist_id = request_data.get('main')
             other_playlist_id = request_data.get('other')
-
+            #TODO: pass main_playlist as playlist object and use playlist id where needed for i can show playlist data in html
             session['main'] = main_playlist_id
             session['other'] = other_playlist_id
 
